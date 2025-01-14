@@ -1,10 +1,8 @@
 import { Body, Controller, Post, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
 import { JwtAuthGuard } from '../guards/auth.guard';
-import { Roles } from './decorators/roles.decorator';
-import { RolesGuard } from '../guards/roles.guard';
+import { LoginUserDto, RegisterUserDto } from './dto';
+import { User } from './decorators/user.decorator';
 
 
 @Controller('auth')
@@ -24,7 +22,7 @@ export class AuthController {
   // @UseGuards(JwtAuthGuard)
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProtectedData() {
-    return { message: 'This is protected data!' };
+  getProtectedData(@User() user: any) {
+    return user
   }
 }
