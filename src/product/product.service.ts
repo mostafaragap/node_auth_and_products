@@ -1,13 +1,28 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ProductRepository } from './repository/product.repository';
 import { CreateProductDto, UpdateProductDto } from './dto';
-
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ProductService {
-    constructor(private readonly productRepository: ProductRepository) { }
+    constructor(private readonly productRepository: ProductRepository,
+        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    ) { }
+
+    async deleteMatchingKeys(pattern: string): Promise<void> {
+        const redisClient = (this.cacheManager as any).store.getClient();
+        const keys = await redisClient.keys(pattern);
+
+        if (keys.length > 0) {
+            await redisClient.del(keys);
+        }
+    }
 
     async create(createProductDto: CreateProductDto) {
+        // await this.cacheManager.del('GET:/products*');
+        await this.deleteMatchingKeys('GET:/products*');
+
         return this.productRepository.create(createProductDto);
     }
 
@@ -35,11 +50,14 @@ export class ProductService {
 
     async update(id: number, updateProductDto: UpdateProductDto) {
         await this.findOne(id); // Ensure product exists
+        // Invalidate cache for 'findAll' and 'findOne'
+        await this.deleteMatchingKeys('GET:/products*');
         return this.productRepository.update(id, updateProductDto);
     }
 
     async delete(id: number) {
         await this.findOne(id); // Ensure product exists
+        await this.deleteMatchingKeys('GET:/products*');
         return this.productRepository.delete(id);
     }
 }
