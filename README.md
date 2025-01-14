@@ -1,73 +1,160 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Application Documentation
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
+This application is built using **NestJS** and leverages **Prisma** as the ORM. It includes modules for authentication, product management, and more. It is designed with best practices for scalability, security, and performance.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
+- Authentication module with secure user management.
+- Product module for managing inventory with Redis caching.
+- Pagination support for data retrieval.
+- Middleware and decorators for request validation and handling.
+- Dockerized setup for easy deployment.
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+## File Structure
+```
+├── src
+│   ├── auth
+│   │   ├── decorators
+│   │   │   ├── roles.decorator.ts
+│   │   │   └── user.decorator.ts
+│   │   ├── dto
+│   │   │   ├── login-user.dto.ts
+│   │   │   ├── register-user.dto.ts
+│   │   │   └── index.ts
+│   │   ├── guards
+│   │   │   ├── auth.guard.ts
+│   │   │   └── roles.guard.ts
+│   │   ├── repository
+│   │   │   ├── repository.service.spec.ts
+│   │   │   └── user.repository.ts
+│   │   ├── strategy
+│   │   │   └── jwt.strategy.ts
+│   │   ├── auth.controller.spec.ts
+│   │   ├── auth.controller.ts
+│   │   ├── auth.module.ts
+│   │   ├── auth.service.spec.ts
+│   │   └── auth.service.ts
+│   ├── interceptors
+│   │   ├── cache.interceptor.spec.ts
+│   │   ├── cache.interceptor.ts
+│   │   └── exclude-password.interceptor.ts
+│   ├── prisma
+│   │   ├── prisma.module.ts
+│   │   ├── prisma.service.spec.ts
+│   │   └── prisma.service.ts
+│   ├── product
+│   │   ├── dto
+│   │   │   ├── create-product.dto.ts
+│   │   │   ├── pagination.dto.ts
+│   │   │   ├── update-product.dto.ts
+│   │   │   └── index.ts
+│   │   ├── repository
+│   │   │   ├── product.repository.spec.ts
+│   │   │   └── product.repository.ts
+│   │   ├── product.controller.spec.ts
+│   │   ├── product.controller.ts
+│   │   ├── product.module.ts
+│   │   ├── product.service.spec.ts
+│   │   └── product.service.ts
+│   ├── app.controller.spec.ts
+│   ├── app.controller.ts
+│   ├── app.module.ts
+│   └── main.ts
+├── prisma
+│   ├── prisma.module.ts
+│   ├── prisma.service.spec.ts
+│   └── prisma.service.ts
+├── .env
+├── .eslintrc.js
+├── .gitignore
+├── Dockerfile
+├── docker-compose.yml
+├── package.json
+├── README.md
+└── tsconfig.json
 ```
 
-## Running the app
+## Prerequisites
+- **Node.js**: v20+
+- **Docker**: Installed and running
+- **Redis**: For caching
 
+## Setup
+
+### Running Locally
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd <repository-name>
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Set environment variables**:
+   Create a `.env` file in the root directory with the following variables:
+   ```env
+   DATABASE_URL=postgresql://postgres:123@localhost:5432/auth_product_db
+   REDIS_HOST=localhost
+   REDIS_PORT=6379
+   JWT_SECRET=strongSecretKey
+   ```
+
+4. **Run Prisma migrations**:
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. **Start the application**:
+   ```bash
+   npm run start:dev
+   ```
+
+6. **Access the application**:
+   Open `http://localhost:3000` in your browser.
+
+### Running with Docker
+1. **Build the Docker image**:
+   ```bash
+   docker build -t <image-name> .
+   ```
+7. **Access Swagger Documentation**:
+   Swagger documentation is available at:
+   ```
+   http://localhost:3000/api
+   ```
+
+2. **Run the container**:
+   ```bash
+   docker-compose up
+   ```
+
+3. **Access the application**:
+   Open `http://localhost:3000` in your browser.
+
+4. **Access Swagger Documentation**:
+   Swagger documentation is available at:
+   ```
+   http://localhost:3000/api
+   ```
+   
+## Testing
+Run unit tests to ensure application functionality:
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run test
+```
+Check test coverage:
+```bash
+npm run test:coverage
 ```
 
-## Test
+## Caching
+The application uses Redis for caching product data. Cache is invalidated on product updates or deletions.
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Pagination
+The application includes a custom pagination decorator for consistent response formatting. Pagination metadata includes `totalItems`, `totalPages`, `currentPage`, and `itemsPerPage`.
 
 ## License
-
-Nest is [MIT licensed](LICENSE).
+This application is licensed under the MIT License.

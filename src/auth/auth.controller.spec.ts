@@ -42,7 +42,7 @@ describe('AuthController', () => {
     it('should call authService.register with RegisterUserDto', async () => {
       const dto: RegisterUserDto = {
         email: 'test@example.com',
-        password: 'password123',
+        password: 'Aa!123456',
         role: 'user',
       };
       const mockResult = { id: 1, email: dto.email, role: dto.role };
@@ -58,7 +58,7 @@ describe('AuthController', () => {
     it('should call authService.login with LoginUserDto', async () => {
       const dto: LoginUserDto = {
         email: 'test@example.com',
-        password: 'password123',
+        password: 'Aa!123456',
       };
       const mockToken = { accessToken: 'jwtToken' };
       mockAuthService.login.mockResolvedValue(mockToken);
@@ -70,10 +70,10 @@ describe('AuthController', () => {
   });
 
   describe('getProtectedData', () => {
-    it('should return the user from the request', () => {
+    it('should return the user from the request',async () => {
       // Since we've overridden JwtAuthGuard, it won't block the route.
       const user = { id: 1, email: 'test@example.com', role: 'user' };
-      const result = authController.getProtectedData(user);
+      const result = await authController.getProfile(user);
       expect(result).toEqual(user);
     });
   });

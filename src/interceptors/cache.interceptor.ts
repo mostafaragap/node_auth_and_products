@@ -19,7 +19,7 @@ export class CacheInterceptor implements NestInterceptor {
 
         // Check if the response is already cached
         const cachedResponse = await this.cacheManager.get(key);
-        if (cachedResponse) {
+        if (cachedResponse) {            
             return of(cachedResponse); // Return cached data
         }
 

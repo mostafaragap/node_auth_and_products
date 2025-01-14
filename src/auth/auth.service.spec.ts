@@ -53,7 +53,7 @@ describe('AuthService', () => {
     it('should create a new user if email does not exist', async () => {
       const dto: RegisterUserDto = {
         email: 'test@example.com',
-        password: 'password123',
+        password: 'Aa!123456',
         role: 'admin',
       };
 
@@ -80,7 +80,7 @@ describe('AuthService', () => {
     it('should throw ConflictException if user already exists', async () => {
       const dto: RegisterUserDto = {
         email: 'exists@example.com',
-        password: 'password123',
+        password: 'Aa!123456',
         role: 'user',
       };
 
