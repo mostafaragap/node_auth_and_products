@@ -14,7 +14,7 @@ export class ProductService {
         const redisClient = (this.cacheManager as any).store.getClient();
         const keys = await redisClient.keys(pattern);
 
-        if (keys.length > 0) {
+        if (keys?.length > 0) {
             await redisClient.del(keys);
         }
     }
