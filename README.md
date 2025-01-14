@@ -115,15 +115,16 @@ This application is built using **NestJS** and leverages **Prisma** as the ORM. 
 6. **Access the application**:
    Open `http://localhost:3000` in your browser.
 
-### Running with Docker
-1. **Build the Docker image**:
-   ```bash
-   docker build -t <image-name> .
-   ```
 7. **Access Swagger Documentation**:
    Swagger documentation is available at:
    ```
    http://localhost:3000/api
+   ```
+
+### Running with Docker
+1. **Build the Docker image**:
+   ```bash
+   docker build -t <image-name> .
    ```
 
 2. **Run the container**:
