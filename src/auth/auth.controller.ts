@@ -8,7 +8,7 @@ import { User } from './decorators/user.decorator';
 @ApiTags('Auth') // Group all endpoints under "Auth"
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @ApiOperation({ summary: 'Register a new user' })
   @ApiResponse({
@@ -39,7 +39,7 @@ export class AuthController {
     description: 'User successfully logged in.',
     schema: {
       example: {
-        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjg0MjU4NzYzLCJleHAiOjE2ODQyNTg3NjN9.qAaFaaZ3Pf_qzRXArR-qWZTmHlcNmrfVoFF4Wj4yfoY',
+        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJ1c2VyIi.....',
       },
     },
   })
@@ -62,6 +62,8 @@ export class AuthController {
         id: 1,
         email: 'user@example.com',
         role: 'user',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     },
   })
